@@ -6,16 +6,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.local.TaskModel
+import com.murali.taskmanager.data.local.CalenderTaskModel
 import com.murali.taskmanager.databinding.ItemTaskLayoutBinding
-import com.murali.taskmanager.view.inter_face.TaskClickListener
-import com.murali.taskmanager.view_model.ViewModelClass
-
+import com.murali.taskmanager.view.inter_face.onTaskClicked
+import com.murali.taskmanager.view_model.TaskViewModel
 
 class TaskAdapter(
-    var list: ArrayList<TaskModel>,
-    private val taskClickListener: TaskClickListener,
-    private val itemViewModelClass: ViewModelClass,
+    var list: ArrayList<CalenderTaskModel>,
+    private val onTaskClicked: onTaskClicked,
+    private val itemTaskViewModel: TaskViewModel,
     private val lifecycleOwner: LifecycleOwner,
 ) :
     RecyclerView.Adapter<TaskViewHolder>() {
@@ -25,8 +24,8 @@ class TaskAdapter(
                 LayoutInflater.from(parent.context),
                 R.layout.item_task_layout, parent, false
             ),
-            taskClickListener,
-            itemViewModelClass,
+            onTaskClicked,
+            itemTaskViewModel,
             lifecycleOwner
         )
     }
@@ -43,19 +42,18 @@ class TaskAdapter(
 
 class TaskViewHolder(
     private val itemTaskLayoutBinding: ItemTaskLayoutBinding,
-    private val taskClickListener: TaskClickListener,
-    private val itemViewModelClass: ViewModelClass,
+    private val onTaskClicked: onTaskClicked,
+    private val itemTaskViewModel: TaskViewModel,
     private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.ViewHolder(itemTaskLayoutBinding.root) {
-    fun setTask(taskModel: TaskModel) {
+    fun setTask(calenderTaskModel: CalenderTaskModel) {
 
-        itemTaskLayoutBinding.task = taskModel
+        itemTaskLayoutBinding.task = calenderTaskModel
 
-        /*
-        itemTaskLayoutBinding.taskItemLayout.setOnClickListener {
-            taskClickListener.taskItemClicked(taskModel)
+
+        itemTaskLayoutBinding.ivDeleteTask.setOnClickListener {
+            onTaskClicked.deleteTaskInViewModel(calenderTaskModel)
         }
-        */
 
 
     }

@@ -5,7 +5,7 @@
 
         <variable
             name="task"
-            type="com.murali.taskmanager.data.local.TaskModel" />
+            type="com.murali.taskmanager.data.local.CalenderTaskModel" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -42,10 +42,9 @@
 
             <TextView
                 android:id="@+id/itemTaskDate"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/itemTaskDescription"
-                android:layout_toRightOf="@id/itemTaskDescription"
                 android:text="@{task.date}"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
@@ -60,7 +59,7 @@
                 android:layout_marginHorizontal="5dp">
 
                 <ImageView
-                    android:id="@+id/ivTaskNotCompleted"
+                    android:id="@+id/ivDeleteTask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_delete_24" />

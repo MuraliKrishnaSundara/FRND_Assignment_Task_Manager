@@ -1,7 +1,5 @@
 package com.murali.taskmanager.view.ui
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,24 +9,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.local.RoomDataBaseClass
-import com.murali.taskmanager.data.local.TaskModel
+import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
+import com.murali.taskmanager.data.local.CalenderTaskModel
 import com.murali.taskmanager.databinding.FragmentTaskBinding
-import com.murali.taskmanager.repository.RepositoryClass
+import com.murali.taskmanager.repository.TaskRepository
 import com.murali.taskmanager.view.adapter.TaskAdapter
-import com.murali.taskmanager.view.inter_face.TaskClickListener
-import com.murali.taskmanager.view_model.ViewModelClass
+import com.murali.taskmanager.view.inter_face.onTaskClicked
+import com.murali.taskmanager.view_model.TaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
-import okhttp3.internal.notifyAll
 
-class TaskFragment : Fragment(), TaskClickListener {
+class TaskFragment : Fragment(), onTaskClicked {
 
     private lateinit var binding: FragmentTaskBinding
-    private lateinit var itemViewModel: ViewModelClass
-
+    private lateinit var itemTaskViewModel: TaskViewModel
     private lateinit var adapter: TaskAdapter
-
-    private var list = arrayListOf<TaskModel>()
+    private var list = arrayListOf<CalenderTaskModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,22 +33,22 @@ class TaskFragment : Fragment(), TaskClickListener {
         return inflater.inflate(R.layout.fragment_task, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentTaskBinding.bind(view)
 
-        val roomDatabase = RoomDataBaseClass.getDataBaseObject(requireContext())
-        val dao = roomDatabase.getDao()
-        val repo = RepositoryClass(dao)
+        val roomDatabase = CalenderTaskRoomDataBase.getRoomDataBaseObject(requireContext())
+        val dao = roomDatabase.getTaskDao()
+        val repo = TaskRepository(dao)
         val viewModelFactory = ViewModelFactory(repo)
-        itemViewModel = ViewModelProviders.of(this, viewModelFactory).get(ViewModelClass::class.java)
 
-        itemViewModel.getDataFromTask().observe(viewLifecycleOwner, Observer {
+        itemTaskViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
+
+        itemTaskViewModel.getAllTasksFromRepository().observe(viewLifecycleOwner, Observer {
             list.clear()
             list.addAll(it)
-
             adapter.notifyDataSetChanged()
         })
         setRecyclerView()
@@ -61,7 +56,7 @@ class TaskFragment : Fragment(), TaskClickListener {
     }
 
     private fun setRecyclerView() {
-        adapter = TaskAdapter(list, this, itemViewModel, this)
+        adapter = TaskAdapter(list, this, itemTaskViewModel, this)
         val linearLayoutManager = LinearLayoutManager(requireContext())
         binding.apply {
             taskRecyclerView.adapter = adapter
@@ -70,20 +65,8 @@ class TaskFragment : Fragment(), TaskClickListener {
         }
     }
 
-    override fun taskItemClicked(taskModel: TaskModel) {
-        TODO("Not yet implemented")
-    }
-
-    override fun taskCompletedClicked(taskModel: TaskModel) {
-        TODO("Not yet implemented")
-    }
-
-    override fun taskNotCompletedClicked(taskModel: TaskModel) {
-        TODO("Not yet implemented")
+    override fun deleteTaskInViewModel(calenderTaskModel: CalenderTaskModel) {
+        itemTaskViewModel.deleteTaskInRepository(calenderTaskModel)
     }
 
 }
-/*
-
-        setContentView(binding.root)
- */

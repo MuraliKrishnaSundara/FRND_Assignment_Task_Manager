@@ -10,8 +10,8 @@ import androidx.collection.arraySetOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.local.TaskModel
-import com.murali.taskmanager.view_model.ViewModelClass
+import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.view_model.TaskViewModel
 import kotlinx.android.synthetic.main.calendar_date_view.view.*
 import java.time.LocalDate
 import java.util.ArrayList
@@ -22,7 +22,7 @@ class CalendarAdapter(
     private val clickListener: DateClickListener,
     private val currentDate: String,
     private val lifecycleOwner: LifecycleOwner,
-    private val itemViewModel: ViewModelClass
+    private val itemTaskViewModel: TaskViewModel
 ) :
     RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 
@@ -35,7 +35,7 @@ class CalendarAdapter(
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.calendar_date_view, parent, false)
         itemViewList.add(view)
-        return CalendarViewHolder(view, clickListener, lifecycleOwner, itemViewModel)
+        return CalendarViewHolder(view, clickListener, lifecycleOwner, itemTaskViewModel)
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
@@ -51,7 +51,7 @@ class CalendarAdapter(
         private val view: View,
         private val clickListener: DateClickListener,
         private val lifecycleOwner: LifecycleOwner,
-        private val itemViewModel: ViewModelClass
+        private val itemTaskViewModel: TaskViewModel
     ) : RecyclerView.ViewHolder(view) {
 
         internal fun setData(date: String) {
@@ -62,8 +62,8 @@ class CalendarAdapter(
                 var today = currentDate.substring(0, currentDate.length - 2)
                 today += date
 
-                var listOfTasks = arraySetOf<TaskModel>()
-                itemViewModel.getTasksByDate(today)
+                var listOfTasks = arraySetOf<CalenderTaskModel>()
+                itemTaskViewModel.getAllTasksFromRepositoryAccordingToDate(today)
                     .observe(lifecycleOwner, androidx.lifecycle.Observer {
                         listOfTasks.addAll(it)
                         if (listOfTasks.isNotEmpty()) {
@@ -117,7 +117,6 @@ class CalendarAdapter(
                         itemViewList[i].rlDate.setBackgroundResource(0)
                     }
                     bool[i] = false
-//                    itemViewList[i].labourLayout.visibility = View.GONE
                 }
             }
 

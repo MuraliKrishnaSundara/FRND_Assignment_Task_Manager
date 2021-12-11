@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "task_table")
+@Entity(tableName = "calender_tasks_table")
 
-class TaskModel(
+class CalenderTaskModel(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "description")
