@@ -45,7 +45,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
 
         val calenderTaskRoomDataBase =
             CalenderTaskRoomDataBase.getRoomDataBaseObject(requireContext())
-        val calenderTaskDao = calenderTaskRoomDataBase.getTaskDao()
+        val calenderTaskDao = calenderTaskRoomDataBase.getCalenderTaskDao()
         val taskRepository = TaskRepository(calenderTaskDao)
         val viewModelFactory = ViewModelFactory(taskRepository)
 
@@ -201,19 +201,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
         }
     }
 
-    override fun taskItemClicked(calenderTaskModel: CalenderTaskModel) {
-//        Toast.makeText(context, "Task Clicked", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun taskCompletedClicked(calenderTaskModel: CalenderTaskModel) {
-        //taskModel.status = 1
-        taskViewModel.deleteTaskInRepository(calenderTaskModel)
-    }
-
     override fun deleteTaskInViewModel(calenderTaskModel: CalenderTaskModel) {
         //taskModel.status = 0
         taskViewModel.deleteTaskInRepository(calenderTaskModel)
     }
-
 
 }

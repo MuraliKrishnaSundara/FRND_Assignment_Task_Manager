@@ -10,7 +10,7 @@ class CalenderTaskModel(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "description")
-    val desc: String,
+    val description: String,
     @ColumnInfo(name = "date")
     val date: String
 ) {

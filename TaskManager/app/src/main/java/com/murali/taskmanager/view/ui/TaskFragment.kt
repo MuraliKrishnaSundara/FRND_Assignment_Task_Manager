@@ -18,7 +18,7 @@ import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 import com.murali.taskmanager.view_model.TaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
 
-class TaskDeleteFragment : Fragment(), onTaskDeleteClicked {
+class TaskFragment : Fragment(), onTaskDeleteClicked {
 
     private lateinit var binding: FragmentTaskBinding
     private lateinit var itemTaskViewModel: TaskViewModel
@@ -39,7 +39,7 @@ class TaskDeleteFragment : Fragment(), onTaskDeleteClicked {
         binding = FragmentTaskBinding.bind(view)
 
         val roomDatabase = CalenderTaskRoomDataBase.getRoomDataBaseObject(requireContext())
-        val dao = roomDatabase.getTaskDao()
+        val dao = roomDatabase.getCalenderTaskDao()
         val repo = TaskRepository(dao)
         val viewModelFactory = ViewModelFactory(repo)
 
@@ -51,6 +51,7 @@ class TaskDeleteFragment : Fragment(), onTaskDeleteClicked {
             list.addAll(it)
             adapter.notifyDataSetChanged()
         })
+        itemTaskViewModel.getAllApiTasksFromRepository()
         setRecyclerView()
 
     }

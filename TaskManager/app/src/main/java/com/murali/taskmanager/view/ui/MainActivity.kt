@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavBar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> setCurrentFragment(HomeFragment())
-                R.id.task -> setCurrentFragment(TaskDeleteFragment())
+                R.id.task -> setCurrentFragment(TaskFragment())
             }
             true
         }

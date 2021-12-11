@@ -9,6 +9,9 @@ interface CalenderTaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addTaskToRoomDataBase(calenderTaskModel: CalenderTaskModel)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addTasksListFromApiToRoomDataBase(calenderTaskModel: ArrayList<CalenderTaskModel>)
+
     @Query("select * from calender_tasks_table")
     fun getAllTasksFromRoomDataBase(): LiveData<List<CalenderTaskModel>>
 
@@ -17,5 +20,8 @@ interface CalenderTaskDao {
 
     @Delete
     fun deleteTaskFromRoomDataBase(calenderTaskModel: CalenderTaskModel)
+
+    @Query("delete from calender_tasks_table")
+    fun deleteAllTasksFromRoomDataBase()
 
 }

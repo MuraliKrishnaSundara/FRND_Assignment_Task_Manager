@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [CalenderTaskModel::class], version = 3)
+@Database(entities = [CalenderTaskModel::class], version = 4)
 
 abstract class CalenderTaskRoomDataBase : RoomDatabase() {
 
-    abstract fun getTaskDao(): CalenderTaskDao
+    abstract fun getCalenderTaskDao(): CalenderTaskDao
 
     companion object {
         private var CalenderTaskInstance: CalenderTaskRoomDataBase? = null
