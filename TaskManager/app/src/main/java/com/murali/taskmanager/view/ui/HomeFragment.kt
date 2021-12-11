@@ -21,7 +21,7 @@ import com.murali.taskmanager.repository.TaskRepository
 import com.murali.taskmanager.view.adapter.CalendarAdapter
 import com.murali.taskmanager.view.adapter.DateClickListener
 import com.murali.taskmanager.view.adapter.TaskAdapter
-import com.murali.taskmanager.view.inter_face.onTaskClicked
+import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 import com.murali.taskmanager.view_model.TaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -30,7 +30,7 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTaskClicked {
+class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTaskDeleteClicked {
 
     private var dateSelected: LocalDate? = null
     private lateinit var listOfDaysInMonth: ArrayList<String>

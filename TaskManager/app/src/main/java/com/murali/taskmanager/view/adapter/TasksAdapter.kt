@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskModel
 import com.murali.taskmanager.databinding.ItemTaskLayoutBinding
-import com.murali.taskmanager.view.inter_face.onTaskClicked
+import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 import com.murali.taskmanager.view_model.TaskViewModel
 
 class TaskAdapter(
     var list: ArrayList<CalenderTaskModel>,
-    private val onTaskClicked: onTaskClicked,
+    private val onTaskDeleteClicked: onTaskDeleteClicked,
     private val itemTaskViewModel: TaskViewModel,
     private val lifecycleOwner: LifecycleOwner,
 ) :
@@ -24,7 +24,7 @@ class TaskAdapter(
                 LayoutInflater.from(parent.context),
                 R.layout.item_task_layout, parent, false
             ),
-            onTaskClicked,
+            onTaskDeleteClicked,
             itemTaskViewModel,
             lifecycleOwner
         )
@@ -42,7 +42,7 @@ class TaskAdapter(
 
 class TaskViewHolder(
     private val itemTaskLayoutBinding: ItemTaskLayoutBinding,
-    private val onTaskClicked: onTaskClicked,
+    private val onTaskDeleteClicked: onTaskDeleteClicked,
     private val itemTaskViewModel: TaskViewModel,
     private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.ViewHolder(itemTaskLayoutBinding.root) {
@@ -52,7 +52,7 @@ class TaskViewHolder(
 
 
         itemTaskLayoutBinding.ivDeleteTask.setOnClickListener {
-            onTaskClicked.deleteTaskInViewModel(calenderTaskModel)
+            onTaskDeleteClicked.deleteTaskInViewModel(calenderTaskModel)
         }
 
 

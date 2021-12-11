@@ -14,11 +14,11 @@ import com.murali.taskmanager.data.local.CalenderTaskModel
 import com.murali.taskmanager.databinding.FragmentTaskBinding
 import com.murali.taskmanager.repository.TaskRepository
 import com.murali.taskmanager.view.adapter.TaskAdapter
-import com.murali.taskmanager.view.inter_face.onTaskClicked
+import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 import com.murali.taskmanager.view_model.TaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
 
-class TaskFragment : Fragment(), onTaskClicked {
+class TaskDeleteFragment : Fragment(), onTaskDeleteClicked {
 
     private lateinit var binding: FragmentTaskBinding
     private lateinit var itemTaskViewModel: TaskViewModel
