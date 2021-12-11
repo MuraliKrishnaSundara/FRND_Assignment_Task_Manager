@@ -1,4 +1,4 @@
-package com.murali.taskmanager.view
+package com.murali.taskmanager.view.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,17 +10,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //setting default fragment as home
         setCurrentFragment(HomeFragment())
 
+        //fragment navigation
         bottomNavBar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.page_1 -> setCurrentFragment(HomeFragment())
-                R.id.page_2 -> setCurrentFragment(TaskFragment())
+                R.id.home -> setCurrentFragment(HomeFragment())
+                R.id.task -> setCurrentFragment(TaskFragment())
             }
             true
         }
+
     }
 
+    //fragment transaction
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.framelayout_container, fragment)

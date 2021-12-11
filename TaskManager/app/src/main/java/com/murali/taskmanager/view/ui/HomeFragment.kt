@@ -1,9 +1,11 @@
-package com.murali.taskmanager.view
+package com.murali.taskmanager.view.ui
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
@@ -33,12 +35,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
     private var selectedDate: LocalDate? = null
     private lateinit var calendarAdapter: CalendarAdapter
     private lateinit var taskAdapter: TaskAdapter
-
     private lateinit var binding: FragmentHomeBinding
     private lateinit var itemViewModel: ViewModelClass
-
     private var listTask = arrayListOf<TaskModel>()
     private lateinit var daysInMonth: ArrayList<String>
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,11 +58,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
         setMonthView()
         jumpToDate()
 
-        rcvGoals(selectedDate.toString())
+        tasksOfSelectedDate(selectedDate.toString())
 
     }
 
-    private fun rcvGoals(today: String) {
+    private fun tasksOfSelectedDate(today: String) {
 
         itemViewModel.getTasksByDate(today).observe(viewLifecycleOwner, Observer {
             listTask.clear()
@@ -69,7 +70,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
             if (listTask.isNotEmpty()) {
                 tvTasksCalendar.visibility = View.VISIBLE
             }
-            if ( listTask.isEmpty() ) {
+            if (listTask.isEmpty()) {
                 nothingToShow.visibility = View.VISIBLE
             } else {
                 nothingToShow.visibility = View.GONE
@@ -95,8 +96,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
 
     private fun setMonthView() {
 
-        previousMonthAction(view)
-        nextMonthAction(view)
+        setPreviousMonth(view)
+        setNextMonth(view)
 
         val currentDate = selectedDate.toString()
         daysInMonth = daysInMonthArray(selectedDate!!)
@@ -104,9 +105,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
             CalendarAdapter(daysInMonth, this, currentDate, viewLifecycleOwner, itemViewModel)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 7)
 
+        //setting month year
         binding.apply {
-            monthYearTV.text = monthYearFromDate(selectedDate!!)
-//            monthYearTV.text = currentDate
+            monthYearTV.text = presentDateMonthYear(selectedDate!!)
             calendarRecyclerView.layoutManager = layoutManager
             calendarRecyclerView.adapter = calendarAdapter
         }
@@ -130,19 +131,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
         return daysInMonthArray
     }
 
-    private fun monthYearFromDate(date: LocalDate): String? {
+    //get month year of current date
+    private fun presentDateMonthYear(date: LocalDate): String? {
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM yyyy")
         return date.format(formatter)
     }
 
-    private fun previousMonthAction(view: View?) {
+    //on click of left arrow set previous month
+    private fun setPreviousMonth(view: View?) {
         binding.previousMonth.setOnClickListener {
             selectedDate = selectedDate!!.minusMonths(1)
             setMonthView()
         }
     }
 
-    private fun nextMonthAction(view: View?) {
+    //on click of right arrow set next month
+    private fun setNextMonth(view: View?) {
         binding.nextMonth.setOnClickListener {
             selectedDate = selectedDate!!.plusMonths(1)
             setMonthView()
@@ -151,14 +155,50 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
 
     override fun onDateClicked(date: String, position: Int, today: String) {
 
-        rcvGoals(today)
+        tasksOfSelectedDate(today)
 
         if (date != "") {
             val message =
-                "Selected Date " + date.toString() + " " + monthYearFromDate(selectedDate!!)
+                "Selected Date " + date.toString() + " " + presentDateMonthYear(selectedDate!!)
+
+            showEditTextDialogToAddTaskName(date.toString())
+
 //            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         } else {
 //            Toast.makeText(context, "null", Toast.LENGTH_LONG).show()
+        }
+    }
+
+
+    //add task name and save data base
+    private fun showEditTextDialogToAddTaskName(date: String) {
+
+        val builder = AlertDialog.Builder(context)
+        val inflater = layoutInflater
+        val dialogLayout = inflater.inflate(R.layout.add_task_layout, null)
+
+        val etTaskName = dialogLayout.findViewById<EditText>(R.id.etTaskName)
+        val etTaskDescription = dialogLayout.findViewById<EditText>(R.id.etTaskDescription)
+
+        with(builder) {
+            setTitle(" Add Task For Selected Date ")
+            setPositiveButton("Add") { dialog, which ->
+
+                //storing in database
+                val taskModel = TaskModel(
+                    etTaskName.text.toString(),
+                    etTaskDescription.text.toString(),
+                    date
+                )
+
+                itemViewModel.insertDataInTaskTable(taskModel)
+
+            }
+            setNegativeButton("Cancel") { dialog, which ->
+                //code for cancel
+            }
+            setView(dialogLayout)
+            show()
         }
     }
 
@@ -167,12 +207,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, TaskCl
     }
 
     override fun taskCompletedClicked(taskModel: TaskModel) {
-        taskModel.status = 1
+        //taskModel.status = 1
         itemViewModel.updateDataInTaskTable(taskModel)
     }
 
     override fun taskNotCompletedClicked(taskModel: TaskModel) {
-        taskModel.status = 0
+        //taskModel.status = 0
         itemViewModel.updateDataInTaskTable(taskModel)
     }
 

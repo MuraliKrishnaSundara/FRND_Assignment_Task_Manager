@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#00000000"
     android:orientation="vertical"
-    tools:context=".view.HomeFragment">
+    tools:context=".view.ui.HomeFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
@@ -52,17 +52,14 @@
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="10dp"
-                            android:src="@drawable/ic_baseline_arrow_back_ios_24"
-                            android:textColor="@color/teal_700"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
                         <TextView
                             android:id="@+id/monthYearTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="Dec 2021"
+                            android:text="December 2021"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
@@ -74,10 +71,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            android:textColor="@color/teal_700"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
 
                     </RelativeLayout>
 
@@ -91,7 +85,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="SUN"
+                            android:text="Sun"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
                             android:textSize="16sp" />
@@ -100,7 +94,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="MON"
+                            android:text="Mon"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
                             android:textSize="16sp" />
@@ -109,7 +103,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TUE"
+                            android:text="Tue"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
                             android:textSize="16sp" />
@@ -118,7 +112,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="WED"
+                            android:text="Wed"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
                             android:textSize="16sp" />
@@ -127,7 +121,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="THUR"
+                            android:text="Thu"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
                             android:textSize="16sp" />
@@ -136,7 +130,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="FRI"
+                            android:text="Fri"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
                             android:textSize="16sp" />
@@ -145,7 +139,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="SAT"
+                            android:text="Sat"
                             android:textAlignment="center"
                             android:textColor="@color/grey"
                             android:textSize="16sp" />
@@ -201,7 +195,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone">
-                    <!--                    android:background="@color/app_background"-->
 
                     <TextView
                         android:id="@+id/textView"
@@ -238,6 +231,42 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+
+
+        <LinearLayout
+            android:id="@+id/addTaskLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="500dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <EditText
+                android:id="@+id/updateEventNoOfTickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="Enter Name of Task" />
+
+            <Button
+                android:id="@+id/btnUpdateEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/teal_700"
+                android:text="Add Task for selected date"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

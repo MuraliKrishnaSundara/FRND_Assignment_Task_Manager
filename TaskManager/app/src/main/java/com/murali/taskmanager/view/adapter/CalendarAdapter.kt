@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.TaskModel
 import com.murali.taskmanager.view_model.ViewModelClass
-import kotlinx.android.synthetic.main.calendar_view.view.*
+import kotlinx.android.synthetic.main.calendar_date_view.view.*
 import java.time.LocalDate
 import java.util.ArrayList
 
@@ -33,7 +33,7 @@ class CalendarAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.calendar_view, parent, false)
+            .inflate(R.layout.calendar_date_view, parent, false)
         itemViewList.add(view)
         return CalendarViewHolder(view, clickListener, lifecycleOwner, itemViewModel)
     }
