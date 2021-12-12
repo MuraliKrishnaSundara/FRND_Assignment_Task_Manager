@@ -16,7 +16,7 @@ abstract class CalendarTaskRoomDataBase : RoomDatabase() {
 
         private var calendarTaskInstance: CalendarTaskRoomDataBase? = null
 
-        //creating room data instance
+        //creating room data base instance
         fun getRoomDataBaseObject(context: Context): CalendarTaskRoomDataBase {
             if (calendarTaskInstance == null) {
                 val builder = Room.databaseBuilder(
