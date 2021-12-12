@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "calender_tasks_table")
 
-class CalenderTaskModel(
+class CalendarTaskModel(
+
     @ColumnInfo(name = "task_id")
     val task_id: Int,
     @ColumnInfo(name = "name")
@@ -15,8 +16,11 @@ class CalenderTaskModel(
     val description: String,
     @ColumnInfo(name = "date")
     val date: String
+
 ) {
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int? = null
+
 }

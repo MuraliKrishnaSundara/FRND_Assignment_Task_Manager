@@ -2,9 +2,9 @@ package com.murali.taskmanager.dependency_injection
 
 import android.content.Context
 import androidx.room.Room
-import com.murali.taskmanager.api.CalenderTasksAPI
-import com.murali.taskmanager.data.local.CalenderTaskDao
-import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
+import com.murali.taskmanager.api.CalendarTasksAPI
+import com.murali.taskmanager.data.local.CalendarTaskDao
+import com.murali.taskmanager.data.local.CalendarTaskRoomDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,24 +16,24 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CalenderTaskModule {
+object CalendarTaskModule {
 
     @Singleton
     @Provides
-    fun provideCalenderTaskAPIService(): CalenderTasksAPI {
+    fun provideCalenderTaskAPIService(): CalendarTasksAPI {
         val builder = Retrofit.Builder()
             .baseUrl("http://13.232.92.136:8084/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        return builder.create(CalenderTasksAPI::class.java)
+        return builder.create(CalendarTasksAPI::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideCalenderTaskRoomDataBase(@ApplicationContext context: Context): CalenderTaskRoomDataBase {
+    fun provideCalenderTaskRoomDataBase(@ApplicationContext context: Context): CalendarTaskRoomDataBase {
         val builder = Room.databaseBuilder(
             context,
-            CalenderTaskRoomDataBase::class.java,
+            CalendarTaskRoomDataBase::class.java,
             "calender_tasks"
         )
         builder.fallbackToDestructiveMigration()
@@ -42,7 +42,7 @@ object CalenderTaskModule {
 
     @Singleton
     @Provides
-    fun provideCalenderTaskDAO(db: CalenderTaskRoomDataBase): CalenderTaskDao {
+    fun provideCalenderTaskDAO(db: CalendarTaskRoomDataBase): CalendarTaskDao {
         return db.getCalenderTaskDao()
     }
 

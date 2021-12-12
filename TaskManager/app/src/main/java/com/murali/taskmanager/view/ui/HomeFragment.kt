@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
+import com.murali.taskmanager.data.local.CalendarTaskRoomDataBase
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
-import com.murali.taskmanager.data.response.get.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.CalendarTaskModel
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.data.response.post.TaskDTO
@@ -30,7 +30,6 @@ import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 import com.murali.taskmanager.view_model.TaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_home.*
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -39,20 +38,20 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTaskDeleteClicked {
 
-    private var dateSelected: LocalDate? = null
-    private lateinit var listOfDaysInMonth: ArrayList<String>
-    private var listOfCalenderTasks = arrayListOf<CalenderTaskModel>()
-    private lateinit var calendarAdapter: CalendarAdapter
+    private var listOfCalenderTasks = arrayListOf<CalendarTaskModel>()
     private lateinit var taskAdapter: TaskAdapter
     private val user_id: Int = 1005
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var taskViewModel: TaskViewModel
+    private var selectedDate: LocalDate? = null
+    private lateinit var listOfDaysInMonth: ArrayList<String>
+    private lateinit var calendarAdapter: CalendarAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val calenderTaskRoomDataBase =
-            CalenderTaskRoomDataBase.getRoomDataBaseObject(requireContext())
+            CalendarTaskRoomDataBase.getRoomDataBaseObject(requireContext())
         val calenderTaskDao = calenderTaskRoomDataBase.getCalenderTaskDao()
         val taskRepository = TaskRepository(calenderTaskDao)
         val viewModelFactory = ViewModelFactory(taskRepository)
@@ -60,28 +59,173 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
         taskViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
-        dateSelected = LocalDate.now()
-        Log.d("murali", dateSelected.toString())
-        calenderTasksOfSelectedDate(dateSelected.toString())
-        createMonthLayout()
+
+        //@RequiresApi(Build.VERSION_CODES.O) added for now
+        selectedDate = LocalDate.now()
+
+        Log.d("murali", selectedDate.toString())
+        getTasksOfSelectedDate(selectedDate.toString())
+        setMonthView()
 
     }
 
-    private fun calenderTasksOfSelectedDate(today: String) {
+    private fun setMonthView() {
 
-        //getting tasks list from view model
-        taskViewModel.getAllTasksFromRepositoryAccordingToDate(today)
+        setLastMonth(view)
+        setNextMonth(view)
+
+        //selected date
+        val currentDate = selectedDate.toString()
+
+        //getting day list of month
+        listOfDaysInMonth = daysInMonthArray(selectedDate!!)
+
+        //setting adapter
+        calendarAdapter =
+            CalendarAdapter(
+                listOfDaysInMonth,
+                this,
+                currentDate
+            )
+
+        //setting layout manager
+        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 7)
+
+        fragmentHomeBinding.apply {
+
+            //setting month year
+            tvMonthYearView.text = monthAndYearOfPresentDate(selectedDate!!)
+
+            //setting dates to month recycler view
+            monthRecyclerView.layoutManager = layoutManager
+            monthRecyclerView.adapter = calendarAdapter
+
+        }
+    }
+
+    private fun daysInMonthArray(date: LocalDate): ArrayList<String> {
+
+        val daysInMonthArray: ArrayList<String> = ArrayList()
+
+        //year and month of date
+        val yearMonthOfDate: YearMonth = YearMonth.from(date)
+
+        //number of Days in month
+        val numberOfDaysInMonth: Int = yearMonthOfDate.lengthOfMonth()
+
+        //day of first date of month
+        val dayOfFirstDateOfMonth = selectedDate!!.withDayOfMonth(1)
+
+        //day of week
+        val dayOfWeek = dayOfFirstDateOfMonth.dayOfWeek.value
+
+        for (i in 1..42) {
+
+            if (i <= dayOfWeek || i > numberOfDaysInMonth + dayOfWeek) {
+
+                //if i exceeds number of days in that month then it will break
+                if (i > numberOfDaysInMonth + dayOfWeek) break
+
+                //if no date of that day present then it will be empty
+                daysInMonthArray.add("")
+
+            } else {
+
+                //adding day of dates in daysInMonthArray array list
+                daysInMonthArray.add((i - dayOfWeek).toString())
+            }
+
+        }
+
+        return daysInMonthArray
+    }
+
+    //get month year of current date
+    private fun monthAndYearOfPresentDate(date: LocalDate): String? {
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM yyyy")
+        return date.format(formatter)
+    }
+
+    //on click of left arrow set previous month
+    private fun setLastMonth(view: View?) {
+        fragmentHomeBinding.ivLastMonth.setOnClickListener {
+            //subtracting month
+            selectedDate = selectedDate!!.minusMonths(1)
+            setMonthView()
+        }
+    }
+
+    //on click of right arrow set next month
+    private fun setNextMonth(view: View?) {
+        fragmentHomeBinding.ivNextMonth.setOnClickListener {
+            //adding month
+            selectedDate = selectedDate!!.plusMonths(1)
+            setMonthView()
+        }
+    }
+
+    override fun onDateClicked(date: String, position: Int, today: String) {
+
+        //clicked date
+        val taskDate =
+            "" + date.toString() + " " + monthAndYearOfPresentDate(selectedDate!!)
+
+        if (date != "") {
+            //show edit text dialog to add task
+            showEditTextDialogToAddTaskName(taskDate)
+        } else {
+            Toast.makeText(context, "Date Error", Toast.LENGTH_LONG).show()
+        }
+
+        //set recycler view of selected task
+        getTasksOfSelectedDate(taskDate)
+
+    }
+
+    //add task name and post to api
+    private fun showEditTextDialogToAddTaskName(date: String) {
+
+        val builder = AlertDialog.Builder(context)
+        val inflater = layoutInflater
+        val dialogLayout = inflater.inflate(R.layout.add_task_layout, null)
+        val etTaskName = dialogLayout.findViewById<EditText>(R.id.etTaskName)
+        val etTaskDescription = dialogLayout.findViewById<EditText>(R.id.etTaskDescription)
+
+        with(builder) {
+            setTitle(" Add Task for $date")
+
+            setPositiveButton("Add") { dialog, which ->
+
+                //setting data to model
+                val taskModel = TaskDTO(
+                    etTaskName.text.toString(),
+                    etTaskDescription.text.toString(),
+                    date
+                )
+
+                val postTasksRequestDTO = PostTasksRequestDTO(user_id = user_id, task = taskModel)
+
+                //posting data to api
+                taskViewModel.postTaskToApiThroughViewModel(postTasksRequestDTO)
+
+            }
+
+            setNegativeButton("Cancel") { dialog, which ->
+                //task will not add to data base
+            }
+
+            setView(dialogLayout)
+            show()
+        }
+    }
+
+    private fun getTasksOfSelectedDate(today: String) {
+
+        //getting tasks list of selected from view model
+        taskViewModel.getAllTasksFromRoomDatabaseAccordingToDateThroughViewModel(today)
             .observe(viewLifecycleOwner, Observer {
                 listOfCalenderTasks.clear()
                 listOfCalenderTasks.addAll(it)
-                if (listOfCalenderTasks.isNotEmpty()) {
-                    tvTasksCalendar.visibility = View.VISIBLE
-                }
-                if (listOfCalenderTasks.isEmpty()) {
-                    nothingToShow.visibility = View.VISIBLE
-                } else {
-                    nothingToShow.visibility = View.GONE
-                }
                 taskAdapter.notifyDataSetChanged()
             })
 
@@ -96,117 +240,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
 
     }
 
-    private fun createMonthLayout() {
-        setPreviousMonth(view)
-        setNextMonth(view)
-        val currentDate = dateSelected.toString()
-        listOfDaysInMonth = daysInMonthArray(dateSelected!!)
-        calendarAdapter =
-            CalendarAdapter(
-                listOfDaysInMonth,
-                this,
-                currentDate,
-                viewLifecycleOwner,
-                taskViewModel
-            )
-        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 7)
-
-        //setting month year
-        fragmentHomeBinding.apply {
-            monthYearTV.text = monthAndYearOfPresentDate(dateSelected!!)
-            calendarRecyclerView.layoutManager = layoutManager
-            calendarRecyclerView.adapter = calendarAdapter
-        }
-    }
-
-    private fun daysInMonthArray(date: LocalDate): ArrayList<String> {
-        val daysInMonthArray: ArrayList<String> = ArrayList()
-        val yearMonth: YearMonth = YearMonth.from(date)
-        val daysInMonth: Int = yearMonth.lengthOfMonth()
-        val firstOfMonth = dateSelected!!.withDayOfMonth(1)
-        val dayOfWeek = firstOfMonth.dayOfWeek.value
-        for (i in 1..42) {
-            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                if (i > daysInMonth + dayOfWeek) break
-                daysInMonthArray.add("")
-            } else {
-                daysInMonthArray.add((i - dayOfWeek).toString())
-            }
-        }
-        return daysInMonthArray
-    }
-
-    //get month year of current date
-    private fun monthAndYearOfPresentDate(date: LocalDate): String? {
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM yyyy")
-        return date.format(formatter)
-    }
-
-    //on click of left arrow set previous month
-    private fun setPreviousMonth(view: View?) {
-        fragmentHomeBinding.previousMonth.setOnClickListener {
-            dateSelected = dateSelected!!.minusMonths(1)
-            createMonthLayout()
-        }
-    }
-
-    //on click of right arrow set next month
-    private fun setNextMonth(view: View?) {
-        fragmentHomeBinding.nextMonth.setOnClickListener {
-            dateSelected = dateSelected!!.plusMonths(1)
-            createMonthLayout()
-        }
-    }
-
-    override fun onDateClicked(date: String, position: Int, today: String) {
-        val taskDate =
-            "" + date.toString() + " " + monthAndYearOfPresentDate(dateSelected!!)
-        calenderTasksOfSelectedDate(taskDate)
-
-        if (date != "") {
-
-            //show edit text dialog to add task
-            showEditTextDialogToAddTaskName(taskDate)
-        } else {
-            Toast.makeText(context, "Date Error", Toast.LENGTH_LONG).show()
-        }
-
-    }
-
-    //add task name and save to data base
-    private fun showEditTextDialogToAddTaskName(date: String) {
-
-        val builder = AlertDialog.Builder(context)
-        val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.add_task_layout, null)
-
-        val etTaskName = dialogLayout.findViewById<EditText>(R.id.etTaskName)
-        val etTaskDescription = dialogLayout.findViewById<EditText>(R.id.etTaskDescription)
-
-        with(builder) {
-            setTitle(" Add Task For Selected Date ")
-            setPositiveButton("Add") { dialog, which ->
-
-                //storing in database
-                val taskModel = TaskDTO(
-                    etTaskName.text.toString(),
-                    etTaskDescription.text.toString(),
-                    date
-                )
-
-                val postTasksRequestDTO = PostTasksRequestDTO(user_id = user_id, task = taskModel)
-                taskViewModel.addTaskApiToThroughRepository(postTasksRequestDTO)
-
-            }
-            setNegativeButton("Cancel") { dialog, which ->
-                //task will not add to data base
-            }
-            setView(dialogLayout)
-            show()
-        }
-    }
-
-    override fun deleteTaskInViewModel(task_id: Int) {
+    override fun deleteTaskThroughViewModelInApi(task_id: Int) {
 
         /*
         as after deleting task in api we need update data in recycler view,
@@ -217,7 +251,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
 
         val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = user_id, task_id = task_id)
         val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
-        taskViewModel.deleteTaskInRepository(deleteTaskRequestDTO, getTasksRequestDTO)
+        taskViewModel.deleteTaskInApiThroughViewModel(deleteTaskRequestDTO, getTasksRequestDTO)
 
     }
 

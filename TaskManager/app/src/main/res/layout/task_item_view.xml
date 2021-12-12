@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="task"
-            type="com.murali.taskmanager.data.response.get.CalenderTaskModel" />
+            name="calendar_task_model"
+            type="com.murali.taskmanager.data.response.get.CalendarTaskModel" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,56 +16,49 @@
         app:cardCornerRadius="12dp">
 
         <RelativeLayout
-            android:id="@+id/taskItemLayout"
+            android:id="@+id/calendarTaskItemLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/teal_700"
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/itemTaskName"
+                android:id="@+id/calendarTaskName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{task.name}"
+                android:text="@{calendar_task_model.name}"
                 android:textColor="@color/white"
                 android:textSize="26sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/itemTaskDescription"
+                android:id="@+id/calendarTaskDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/itemTaskName"
+                android:layout_below="@+id/calendarTaskName"
                 android:maxLines="2"
-                android:text="@{task.description}"
+                android:text="@{calendar_task_model.description}"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/itemTaskDate"
+                android:id="@+id/calendarTaskDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/itemTaskDescription"
-                android:text="@{task.date}"
+                android:layout_below="@id/calendarTaskDescription"
+                android:text="@{calendar_task_model.date}"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
-
-            <LinearLayout
-                android:id="@+id/checkStatus"
+            <ImageView
+                android:id="@+id/ivDeleteTask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/itemTaskDate"
                 android:layout_alignParentEnd="true"
-                android:layout_marginHorizontal="5dp">
+                android:src="@drawable/ic_baseline_delete_24" />
 
-                <ImageView
-                    android:id="@+id/ivDeleteTask"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_delete_24" />
-            </LinearLayout>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
 </layout>

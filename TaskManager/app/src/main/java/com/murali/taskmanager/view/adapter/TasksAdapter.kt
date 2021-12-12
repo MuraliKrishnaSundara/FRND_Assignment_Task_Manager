@@ -5,48 +5,52 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.response.get.CalenderTaskModel
-import com.murali.taskmanager.databinding.ItemTaskLayoutBinding
+import com.murali.taskmanager.data.response.get.CalendarTaskModel
+import com.murali.taskmanager.databinding.TaskItemViewBinding
 import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 
 class TaskAdapter(
-    var list: ArrayList<CalenderTaskModel>,
+    var calendarTaskList: ArrayList<CalendarTaskModel>,
     private val onTaskDeleteClicked: onTaskDeleteClicked
 ) :
     RecyclerView.Adapter<TaskViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_task_layout, parent, false
+                R.layout.task_item_view, parent, false
             ),
             onTaskDeleteClicked
         )
     }
 
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = list[position]
-        holder.setTask(task)
+    override fun onBindViewHolder(taskViewHolder: TaskViewHolder, position: Int) {
+        val calendarTask = calendarTaskList[position]
+        taskViewHolder.setTask(calendarTask)
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return calendarTaskList.size
     }
+
 }
 
+
 class TaskViewHolder(
-    private val itemTaskLayoutBinding: ItemTaskLayoutBinding,
+    private val taskItemViewBinding: TaskItemViewBinding,
     private val onTaskDeleteClicked: onTaskDeleteClicked
-) : RecyclerView.ViewHolder(itemTaskLayoutBinding.root) {
-    fun setTask(calenderTaskModel: CalenderTaskModel) {
+) : RecyclerView.ViewHolder(taskItemViewBinding.root) {
+    fun setTask(calendarTaskModel: CalendarTaskModel) {
 
-        itemTaskLayoutBinding.task = calenderTaskModel
+        //passing data to view through calendarTaskModel data binding
+        taskItemViewBinding.calendarTaskModel = calendarTaskModel
 
-
-        itemTaskLayoutBinding.ivDeleteTask.setOnClickListener {
-            onTaskDeleteClicked.deleteTaskInViewModel(calenderTaskModel.task_id)
+        //on click of delete task, it will get task_id of that task and pass to view model to delete it
+        taskItemViewBinding.ivDeleteTask.setOnClickListener {
+            onTaskDeleteClicked.deleteTaskThroughViewModelInApi(calendarTaskModel.task_id)
         }
 
-
     }
+
 }

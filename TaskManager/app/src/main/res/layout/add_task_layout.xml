@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:hint="Enter Task Name"
+        android:hint="Enter Calendar Task Name"
         android:textSize="16sp" />
 
     <EditText
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:hint="Enter Task Description"
+        android:hint="Enter Calendar Task Description"
         android:textSize="16sp" />
 
 </LinearLayout>

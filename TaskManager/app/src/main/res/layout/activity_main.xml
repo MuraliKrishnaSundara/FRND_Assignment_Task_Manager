@@ -34,8 +34,8 @@
             android:bottomRightRadius="32dp"
             android:topLeftRadius="18dp"
             android:topRightRadius="18dp"
-            app:itemIconTint="@color/teal_700"
-            app:itemRippleColor="#FF9D5B"
+            app:itemIconTint="@color/teal_200"
+            app:itemRippleColor="@color/teal_700"
             app:menu="@menu/bottom_navigation_menu" />
 
     </androidx.cardview.widget.CardView>

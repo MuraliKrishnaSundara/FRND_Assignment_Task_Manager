@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
-import com.murali.taskmanager.data.response.get.CalenderTaskModel
+import com.murali.taskmanager.data.local.CalendarTaskRoomDataBase
+import com.murali.taskmanager.data.response.get.CalendarTaskModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.databinding.FragmentTaskBinding
@@ -26,7 +26,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
     private lateinit var itemTaskViewModel: TaskViewModel
     private val user_id: Int = 1005
     private lateinit var adapter: TaskAdapter
-    private var list = arrayListOf<CalenderTaskModel>()
+    private var list = arrayListOf<CalendarTaskModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +40,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentTaskBinding.bind(view)
-
-        val roomDatabase = CalenderTaskRoomDataBase.getRoomDataBaseObject(requireContext())
+        val roomDatabase = CalendarTaskRoomDataBase.getRoomDataBaseObject(requireContext())
         val dao = roomDatabase.getCalenderTaskDao()
         val repo = TaskRepository(dao)
         val viewModelFactory = ViewModelFactory(repo)
@@ -54,7 +53,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
             ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
 
         //observing live data
-        itemTaskViewModel.getAllTasksFromRepository().observe(viewLifecycleOwner, Observer {
+        itemTaskViewModel.getAllTasksFromRoomDatabaseThroughViewModel().observe(viewLifecycleOwner, Observer {
             list.clear()
             list.addAll(it)
             adapter.notifyDataSetChanged()
@@ -62,7 +61,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
 
         //getting tasks from api
         val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
-        itemTaskViewModel.getAllApiTasksFromRepository(getTasksRequestDTO)
+        itemTaskViewModel.getAllTasksFromApiThroughViewModel(getTasksRequestDTO)
 
     }
 
@@ -75,7 +74,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
         }
     }
 
-    override fun deleteTaskInViewModel(task_id: Int) {
+    override fun deleteTaskThroughViewModelInApi(task_id: Int) {
 
         /*
         as after deleting task in api we need update data in recycler view,
@@ -86,7 +85,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
 
         val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = user_id, task_id = task_id)
         val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
-        itemTaskViewModel.deleteTaskInRepository(deleteTaskRequestDTO, getTasksRequestDTO)
+        itemTaskViewModel.deleteTaskInApiThroughViewModel(deleteTaskRequestDTO, getTasksRequestDTO)
 
     }
 

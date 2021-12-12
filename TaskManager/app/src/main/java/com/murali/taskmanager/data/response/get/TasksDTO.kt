@@ -6,5 +6,5 @@ data class TasksDTO(
     @SerializedName("task_id")
     val task_id: Int,
     @SerializedName("task_detail")
-    val task_detail: CalenderTaskModel
+    val task_detail: CalendarTaskModel
 )

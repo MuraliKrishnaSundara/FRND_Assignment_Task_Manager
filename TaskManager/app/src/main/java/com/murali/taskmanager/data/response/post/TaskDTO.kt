@@ -3,10 +3,12 @@ package com.murali.taskmanager.data.response.post
 import com.google.gson.annotations.SerializedName
 
 data class TaskDTO(
+
     @SerializedName("name")
     val name: String,
     @SerializedName("description")
     val description: String,
     @SerializedName("date")
     val date: String
+
 )

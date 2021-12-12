@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //setting default fragment as home
+        //setting default fragment as home fragment
         setCurrentFragment(HomeFragment())
 
         //fragment navigation
