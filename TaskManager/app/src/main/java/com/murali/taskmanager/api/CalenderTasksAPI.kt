@@ -1,4 +1,4 @@
-package com.murali.taskmanager.data.api
+package com.murali.taskmanager.api
 
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO

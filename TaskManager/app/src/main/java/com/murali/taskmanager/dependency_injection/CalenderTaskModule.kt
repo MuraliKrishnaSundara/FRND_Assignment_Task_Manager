@@ -2,7 +2,7 @@ package com.murali.taskmanager.dependency_injection
 
 import android.content.Context
 import androidx.room.Room
-import com.murali.taskmanager.data.api.CalenderTasksAPI
+import com.murali.taskmanager.api.CalenderTasksAPI
 import com.murali.taskmanager.data.local.CalenderTaskDao
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
 import dagger.Module

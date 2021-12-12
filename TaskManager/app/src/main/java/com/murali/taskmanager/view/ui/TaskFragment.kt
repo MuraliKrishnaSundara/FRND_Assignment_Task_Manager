@@ -24,6 +24,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
 
     private lateinit var binding: FragmentTaskBinding
     private lateinit var itemTaskViewModel: TaskViewModel
+    private val user_id: Int = 1005
     private lateinit var adapter: TaskAdapter
     private var list = arrayListOf<CalenderTaskModel>()
 
@@ -45,19 +46,23 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
         val repo = TaskRepository(dao)
         val viewModelFactory = ViewModelFactory(repo)
 
+        //setting recycler view and getting data from room db
+        setRecyclerView()
+
+        //to get instance
         itemTaskViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
 
+        //observing live data
         itemTaskViewModel.getAllTasksFromRepository().observe(viewLifecycleOwner, Observer {
             list.clear()
             list.addAll(it)
             adapter.notifyDataSetChanged()
         })
 
-        val getTasksRequestDTO = GetTasksRequestDTO(user_id = 1005)
+        //getting tasks from api
+        val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
         itemTaskViewModel.getAllApiTasksFromRepository(getTasksRequestDTO)
-
-        setRecyclerView()
 
     }
 
@@ -71,11 +76,18 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
     }
 
     override fun deleteTaskInViewModel(task_id: Int) {
-        val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = 1005, task_id = task_id)
-        itemTaskViewModel.deleteTaskInRepository(deleteTaskRequestDTO)
 
-        val getTasksRequestDTO = GetTasksRequestDTO(user_id = 1005)
-        itemTaskViewModel.getAllApiTasksFromRepository(getTasksRequestDTO)
+        /*
+        as after deleting task in api we need update data in recycler view,
+        so here after successfully deleting task from api
+        we are again making api call and storing in room db
+        which can be observed through live data and the recycler view will be updated.
+         */
+
+        val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = user_id, task_id = task_id)
+        val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
+        itemTaskViewModel.deleteTaskInRepository(deleteTaskRequestDTO, getTasksRequestDTO)
+
     }
 
 }

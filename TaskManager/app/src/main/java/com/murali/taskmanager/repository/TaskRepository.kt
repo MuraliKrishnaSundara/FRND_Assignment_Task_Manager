@@ -2,8 +2,9 @@ package com.murali.taskmanager.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.murali.taskmanager.data.api.Network
-import com.murali.taskmanager.data.api.CalenderTasksAPI
+
+import com.murali.taskmanager.api.Network
+import com.murali.taskmanager.api.CalenderTasksAPI
 import com.murali.taskmanager.data.local.CalenderTaskDao
 import com.murali.taskmanager.data.local.CalenderTaskModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 class TaskRepository(val calenderTaskDao: CalenderTaskDao) {
 
     private val apiCalender: CalenderTasksAPI =
-        Network.getRetrofit().create(CalenderTasksAPI::class.java)
+        Network.retrofit.create(CalenderTasksAPI::class.java)
 
     //adding task to api
     fun addTaskApiToDao(calenderTaskModel: PostTasksRequestDTO) {
@@ -70,11 +71,16 @@ class TaskRepository(val calenderTaskDao: CalenderTaskDao) {
         return calenderTaskDao.getAllTasksFromRoomDataBaseAccordingToDate(date)
     }
 
-    fun deleteTaskInApi(deleteTaskRequestDTO: DeleteTaskRequestDTO) {
+    fun deleteTaskInApi(
+        deleteTaskRequestDTO: DeleteTaskRequestDTO,
+        getTasksRequestDTO: GetTasksRequestDTO
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = apiCalender.deleteTaskInApi(deleteTaskRequestDTO)
             if (response.status == "Success") {
                 Log.d("murali", "Task Deleted Successfully")
+                //after successfully deleting we are again making api call
+                getAllTasksFromApiAndAddToRoomDataBase(getTasksRequestDTO)
             }
             Log.d("murali", "Task Failed To Delete")
         }

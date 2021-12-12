@@ -22,7 +22,7 @@ import com.murali.taskmanager.databinding.FragmentHomeBinding
 import com.murali.taskmanager.repository.TaskRepository
 import com.murali.taskmanager.view.adapter.CalendarAdapter
 import com.murali.taskmanager.view.adapter.TaskAdapter
-import com.murali.taskmanager.view.inter_face.DateClickListener
+import com.murali.taskmanager.view.inter_face.onDateClickListener
 import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 import com.murali.taskmanager.view_model.TaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
@@ -34,13 +34,14 @@ import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTaskDeleteClicked {
+class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTaskDeleteClicked {
 
     private var dateSelected: LocalDate? = null
     private lateinit var listOfDaysInMonth: ArrayList<String>
     private var listOfCalenderTasks = arrayListOf<CalenderTaskModel>()
     private lateinit var calendarAdapter: CalendarAdapter
     private lateinit var taskAdapter: TaskAdapter
+    private val user_id: Int = 1005
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var taskViewModel: TaskViewModel
 
@@ -172,7 +173,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
 
     }
 
-
     //add task name and save to data base
     private fun showEditTextDialogToAddTaskName(date: String) {
 
@@ -194,7 +194,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
                     date
                 )
 
-                val postTasksRequestDTO = PostTasksRequestDTO(user_id = 1005, task = taskModel)
+                val postTasksRequestDTO = PostTasksRequestDTO(user_id = user_id, task = taskModel)
                 taskViewModel.addTaskApiToThroughRepository(postTasksRequestDTO)
 
             }

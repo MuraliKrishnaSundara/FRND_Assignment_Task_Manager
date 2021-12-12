@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskModel
-import com.murali.taskmanager.view.inter_face.DateClickListener
+import com.murali.taskmanager.view.inter_face.onDateClickListener
 import com.murali.taskmanager.view_model.TaskViewModel
 import kotlinx.android.synthetic.main.calendar_date_view.view.*
 import java.time.LocalDate
@@ -20,7 +20,7 @@ import java.util.ArrayList
 @RequiresApi(Build.VERSION_CODES.O)
 class CalendarAdapter(
     private var dateList: ArrayList<String>,
-    private val clickListener: DateClickListener,
+    private val clickListener: onDateClickListener,
     private val currentDate: String,
     private val lifecycleOwner: LifecycleOwner,
     private val itemTaskViewModel: TaskViewModel
@@ -51,7 +51,7 @@ class CalendarAdapter(
     //calender view holder
     inner class CalendarViewHolder(
         private val view: View,
-        private val clickListener: DateClickListener,
+        private val clickListener: onDateClickListener,
         private val lifecycleOwner: LifecycleOwner,
         private val itemTaskViewModel: TaskViewModel
     ) : RecyclerView.ViewHolder(view) {

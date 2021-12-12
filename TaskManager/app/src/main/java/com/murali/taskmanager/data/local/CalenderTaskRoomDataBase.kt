@@ -12,6 +12,7 @@ abstract class CalenderTaskRoomDataBase : RoomDatabase() {
     abstract fun getCalenderTaskDao(): CalenderTaskDao
 
     companion object {
+
         private var CalenderTaskInstance: CalenderTaskRoomDataBase? = null
 
         fun getRoomDataBaseObject(context: Context): CalenderTaskRoomDataBase {

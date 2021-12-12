@@ -8,7 +8,7 @@ import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.repository.TaskRepository
 
-class TaskViewModel (val repository: TaskRepository) : ViewModel() {
+class TaskViewModel(val repository: TaskRepository) : ViewModel() {
 
     //adding tasks to api
     fun addTaskApiToThroughRepository(calenderTaskModel: PostTasksRequestDTO) {
@@ -30,8 +30,11 @@ class TaskViewModel (val repository: TaskRepository) : ViewModel() {
     }
 
     //deleting tasks in api
-    fun deleteTaskInRepository(deleteTaskRequestDTO: DeleteTaskRequestDTO) {
-        repository.deleteTaskInApi(deleteTaskRequestDTO)
+    fun deleteTaskInRepository(
+        deleteTaskRequestDTO: DeleteTaskRequestDTO,
+        getTasksRequestDTO: GetTasksRequestDTO
+    ) {
+        repository.deleteTaskInApi(deleteTaskRequestDTO, getTasksRequestDTO)
     }
 
 }

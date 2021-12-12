@@ -15,9 +15,6 @@ interface CalenderTaskDao {
     @Query("select * from calender_tasks_table where date = :date")
     fun getAllTasksFromRoomDataBaseAccordingToDate(date: String): LiveData<List<CalenderTaskModel>>
 
-    @Delete
-    fun deleteTaskFromRoomDataBase(calenderTaskModel: CalenderTaskModel)
-
     @Query("delete from calender_tasks_table")
     fun deleteAllTasksFromRoomDataBase()
 
