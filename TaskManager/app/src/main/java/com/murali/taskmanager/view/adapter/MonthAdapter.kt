@@ -14,12 +14,12 @@ import java.time.LocalDate
 import java.util.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
-class CalendarAdapter(
+class MonthAdapter(
     private var listOfDates: ArrayList<String>,
     private val onDateClicked: onDateClickListener,
     private val presentDate: String
 ) :
-    RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
+    RecyclerView.Adapter<MonthAdapter.CalendarViewHolder>() {
 
     //list of item view
     private val listOfItemView = ArrayList<View>()

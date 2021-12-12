@@ -23,7 +23,7 @@ import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.data.response.post.TaskDTO
 import com.murali.taskmanager.databinding.FragmentHomeBinding
 import com.murali.taskmanager.repository.TaskRepository
-import com.murali.taskmanager.view.adapter.CalendarAdapter
+import com.murali.taskmanager.view.adapter.MonthAdapter
 import com.murali.taskmanager.view.adapter.TaskAdapter
 import com.murali.taskmanager.view.inter_face.onDateClickListener
 import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
@@ -45,7 +45,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
     private lateinit var taskViewModel: TaskViewModel
     private var selectedDate: LocalDate? = null
     private lateinit var listOfDaysInMonth: ArrayList<String>
-    private lateinit var calendarAdapter: CalendarAdapter
+    private lateinit var monthAdapter: MonthAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,8 +81,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
         listOfDaysInMonth = daysInMonthArray(selectedDate!!)
 
         //setting adapter
-        calendarAdapter =
-            CalendarAdapter(
+        monthAdapter =
+            MonthAdapter(
                 listOfDaysInMonth,
                 this,
                 currentDate
@@ -98,7 +98,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
 
             //setting dates to month recycler view
             monthRecyclerView.layoutManager = layoutManager
-            monthRecyclerView.adapter = calendarAdapter
+            monthRecyclerView.adapter = monthAdapter
 
         }
     }
