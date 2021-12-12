@@ -3,6 +3,7 @@ package com.murali.taskmanager.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.repository.TaskRepository
@@ -28,8 +29,9 @@ class TaskViewModel (val repository: TaskRepository) : ViewModel() {
         return repository.getAllTasksFromDaoAccordingToDate(date)
     }
 
-    fun deleteTaskInRepository(calenderTaskModel: CalenderTaskModel) {
-        repository.deleteTaskInDao(calenderTaskModel)
+    //deleting tasks in api
+    fun deleteTaskInRepository(deleteTaskRequestDTO: DeleteTaskRequestDTO) {
+        repository.deleteTaskInApi(deleteTaskRequestDTO)
     }
 
 }

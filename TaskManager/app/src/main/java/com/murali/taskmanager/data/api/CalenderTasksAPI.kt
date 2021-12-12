@@ -1,18 +1,19 @@
 package com.murali.taskmanager.data.api
 
+import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksResponseDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
-import com.murali.taskmanager.data.response.post.PostTasksResponseDTO
+import com.murali.taskmanager.data.response.StatusResponseDTO
 import retrofit2.http.*
 
 interface CalenderTasksAPI {
 
-    //posting tasks to api
+    //posting task to api
     @POST("api/storeCalendarTask")
     suspend fun addTaskToAPI(
         @Body postTasksRequestDTO: PostTasksRequestDTO
-    ): PostTasksResponseDTO
+    ): StatusResponseDTO
 
     //getting tasks from api
     @POST("api/getCalendarTaskList")
@@ -20,11 +21,10 @@ interface CalenderTasksAPI {
         @Body getTasksRequestDTO: GetTasksRequestDTO
     ): GetTasksResponseDTO
 
-    /*
-        @POST("api/deleteCalendarTask")
-        suspend fun signUp(
-            @Body signupRequestModel: User
-        ): SignupResponse
-    */
+    //deleting task in api
+    @POST("api/deleteCalendarTask")
+    suspend fun deleteTaskInApi(
+        @Body deleteTaskRequestDTO: DeleteTaskRequestDTO
+    ): StatusResponseDTO
 
 }

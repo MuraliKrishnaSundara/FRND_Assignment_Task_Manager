@@ -81,7 +81,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
             })
 
         //setting recycler view
-        taskAdapter = TaskAdapter(listOfCalenderTasks, this, taskViewModel, this)
+        taskAdapter = TaskAdapter(listOfCalenderTasks, this)
         val linearLayoutManagerTask = LinearLayoutManager(requireContext())
         fragmentHomeBinding.apply {
             calenderTasksRecyclerView.adapter = taskAdapter
@@ -206,9 +206,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
         }
     }
 
+    override fun deleteTaskInViewModel(task_id: Int) {
+        TODO("Not yet implemented")
+    }
+/*
     override fun deleteTaskInViewModel(calenderTaskModel: CalenderTaskModel) {
         //taskModel.status = 0
         taskViewModel.deleteTaskInRepository(calenderTaskModel)
     }
-
+*/
 }

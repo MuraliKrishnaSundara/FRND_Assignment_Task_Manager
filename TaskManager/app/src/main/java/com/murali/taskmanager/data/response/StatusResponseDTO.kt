@@ -1,8 +1,8 @@
-package com.murali.taskmanager.data.response.post
+package com.murali.taskmanager.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class PostTasksResponseDTO(
+data class StatusResponseDTO(
 	@SerializedName("status")
 	val status: String
 )

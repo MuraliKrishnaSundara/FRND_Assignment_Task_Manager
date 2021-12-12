@@ -4,6 +4,6 @@ import com.murali.taskmanager.data.local.CalenderTaskModel
 
 interface onTaskDeleteClicked {
 
-    fun deleteTaskInViewModel(calenderTaskModel: CalenderTaskModel)
+    fun deleteTaskInViewModel(task_id: Int)
 
 }

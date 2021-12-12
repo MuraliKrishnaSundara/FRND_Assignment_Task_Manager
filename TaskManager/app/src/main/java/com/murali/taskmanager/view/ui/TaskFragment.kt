@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
 import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.databinding.FragmentTaskBinding
 import com.murali.taskmanager.repository.TaskRepository
@@ -53,25 +54,28 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
             adapter.notifyDataSetChanged()
         })
 
-        setRecyclerView()
-
         val getTasksRequestDTO = GetTasksRequestDTO(user_id = 1005)
         itemTaskViewModel.getAllApiTasksFromRepository(getTasksRequestDTO)
+
+        setRecyclerView()
 
     }
 
     private fun setRecyclerView() {
-        adapter = TaskAdapter(list, this, itemTaskViewModel, this)
+        adapter = TaskAdapter(list, this)
         val linearLayoutManager = LinearLayoutManager(requireContext())
         binding.apply {
             taskRecyclerView.adapter = adapter
             taskRecyclerView.layoutManager = linearLayoutManager
-            //taskRecyclerView.isNestedScrollingEnabled = false
         }
     }
 
-    override fun deleteTaskInViewModel(calenderTaskModel: CalenderTaskModel) {
-        itemTaskViewModel.deleteTaskInRepository(calenderTaskModel)
+    override fun deleteTaskInViewModel(task_id: Int) {
+        val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = 1005, task_id = task_id)
+        itemTaskViewModel.deleteTaskInRepository(deleteTaskRequestDTO)
+
+        val getTasksRequestDTO = GetTasksRequestDTO(user_id = 1005)
+        itemTaskViewModel.getAllApiTasksFromRepository(getTasksRequestDTO)
     }
 
 }
