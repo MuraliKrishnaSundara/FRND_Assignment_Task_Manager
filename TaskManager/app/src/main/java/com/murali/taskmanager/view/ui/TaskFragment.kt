@@ -14,16 +14,16 @@ import com.murali.taskmanager.data.response.get.CalendarTaskModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.databinding.FragmentTaskBinding
-import com.murali.taskmanager.repository.TaskRepository
+import com.murali.taskmanager.repository.CalendarTaskRepository
 import com.murali.taskmanager.view.adapter.TaskAdapter
 import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
-import com.murali.taskmanager.view_model.TaskViewModel
+import com.murali.taskmanager.view_model.CalendarTaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
 
 class TaskFragment : Fragment(), onTaskDeleteClicked {
 
     private lateinit var binding: FragmentTaskBinding
-    private lateinit var itemTaskViewModel: TaskViewModel
+    private lateinit var itemCalendarTaskViewModel: CalendarTaskViewModel
     private val user_id: Int = 1005
     private lateinit var adapter: TaskAdapter
     private var list = arrayListOf<CalendarTaskModel>()
@@ -42,18 +42,18 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
         binding = FragmentTaskBinding.bind(view)
         val roomDatabase = CalendarTaskRoomDataBase.getRoomDataBaseObject(requireContext())
         val dao = roomDatabase.getCalenderTaskDao()
-        val repo = TaskRepository(dao)
+        val repo = CalendarTaskRepository(dao)
         val viewModelFactory = ViewModelFactory(repo)
 
         //setting recycler view and getting data from room db
         setRecyclerView()
 
         //to get instance
-        itemTaskViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
+        itemCalendarTaskViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(CalendarTaskViewModel::class.java)
 
         //observing live data
-        itemTaskViewModel.getAllTasksFromRoomDatabaseThroughViewModel().observe(viewLifecycleOwner, Observer {
+        itemCalendarTaskViewModel.getAllTasksFromRoomDatabaseThroughViewModel().observe(viewLifecycleOwner, Observer {
             list.clear()
             list.addAll(it)
             adapter.notifyDataSetChanged()
@@ -61,7 +61,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
 
         //getting tasks from api
         val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
-        itemTaskViewModel.getAllTasksFromApiThroughViewModel(getTasksRequestDTO)
+        itemCalendarTaskViewModel.getAllTasksFromApiThroughViewModel(getTasksRequestDTO)
 
     }
 
@@ -85,7 +85,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
 
         val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = user_id, task_id = task_id)
         val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
-        itemTaskViewModel.deleteTaskInApiThroughViewModel(deleteTaskRequestDTO, getTasksRequestDTO)
+        itemCalendarTaskViewModel.deleteTaskInApiThroughViewModel(deleteTaskRequestDTO, getTasksRequestDTO)
 
     }
 

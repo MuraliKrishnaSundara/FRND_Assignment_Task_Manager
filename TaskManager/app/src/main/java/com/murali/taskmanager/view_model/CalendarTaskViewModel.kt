@@ -6,31 +6,31 @@ import com.murali.taskmanager.data.response.get.CalendarTaskModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
-import com.murali.taskmanager.repository.TaskRepository
+import com.murali.taskmanager.repository.CalendarTaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskViewModel @Inject constructor(val repository: TaskRepository) : ViewModel() {
+class CalendarTaskViewModel @Inject constructor(val repositoryCalendar: CalendarTaskRepository) : ViewModel() {
 
     //adding tasks to api
     fun postTaskToApiThroughViewModel(calenderTaskModel: PostTasksRequestDTO) {
-        repository.postTaskToApiThroughRepository(calenderTaskModel)
+        repositoryCalendar.postTaskToApiThroughRepository(calenderTaskModel)
     }
 
     //getting all tasks from api but adding to room db
     fun getAllTasksFromApiThroughViewModel(getTasksRequestDTO: GetTasksRequestDTO) {
-        repository.getAllTasksFromApiThroughRepository(getTasksRequestDTO)
+        repositoryCalendar.getAllTasksFromApiThroughRepository(getTasksRequestDTO)
     }
 
     //getting all tasks from room db using livedata
     fun getAllTasksFromRoomDatabaseThroughViewModel(): LiveData<List<CalendarTaskModel>> {
-        return repository.getAllTasksFromRoomDatabaseThroughRepository()
+        return repositoryCalendar.getAllTasksFromRoomDatabaseThroughRepository()
     }
 
     //getting all tasks from room db according to date selected using livedata
     fun getAllTasksFromRoomDatabaseAccordingToDateThroughViewModel(date: String): LiveData<List<CalendarTaskModel>> {
-        return repository.getAllTasksFromRoomDatabaseAccordingToDateThroughRepository(date)
+        return repositoryCalendar.getAllTasksFromRoomDatabaseAccordingToDateThroughRepository(date)
     }
 
     //deleting task in api
@@ -38,7 +38,7 @@ class TaskViewModel @Inject constructor(val repository: TaskRepository) : ViewMo
         deleteTaskRequestDTO: DeleteTaskRequestDTO,
         getTasksRequestDTO: GetTasksRequestDTO
     ) {
-        repository.deleteTaskInApiThroughRepository(deleteTaskRequestDTO, getTasksRequestDTO)
+        repositoryCalendar.deleteTaskInApiThroughRepository(deleteTaskRequestDTO, getTasksRequestDTO)
     }
 
 }

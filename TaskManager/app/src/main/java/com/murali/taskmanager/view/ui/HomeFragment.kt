@@ -22,12 +22,12 @@ import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.data.response.post.TaskDTO
 import com.murali.taskmanager.databinding.FragmentHomeBinding
-import com.murali.taskmanager.repository.TaskRepository
+import com.murali.taskmanager.repository.CalendarTaskRepository
 import com.murali.taskmanager.view.adapter.MonthAdapter
 import com.murali.taskmanager.view.adapter.TaskAdapter
 import com.murali.taskmanager.view.inter_face.onDateClickListener
 import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
-import com.murali.taskmanager.view_model.TaskViewModel
+import com.murali.taskmanager.view_model.CalendarTaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -42,7 +42,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
     private lateinit var taskAdapter: TaskAdapter
     private val user_id: Int = 1005
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
-    private lateinit var taskViewModel: TaskViewModel
+    private lateinit var calendarTaskViewModel: CalendarTaskViewModel
     private var selectedDate: LocalDate? = null
     private lateinit var listOfDaysInMonth: ArrayList<String>
     private lateinit var monthAdapter: MonthAdapter
@@ -53,12 +53,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
         val calenderTaskRoomDataBase =
             CalendarTaskRoomDataBase.getRoomDataBaseObject(requireContext())
         val calenderTaskDao = calenderTaskRoomDataBase.getCalenderTaskDao()
-        val taskRepository = TaskRepository(calenderTaskDao)
+        val taskRepository = CalendarTaskRepository(calenderTaskDao)
         val viewModelFactory = ViewModelFactory(taskRepository)
 
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
-        taskViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
+        calendarTaskViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(CalendarTaskViewModel::class.java)
 
         //@RequiresApi(Build.VERSION_CODES.O) added for now
         selectedDate = LocalDate.now()
@@ -206,7 +206,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
                 val postTasksRequestDTO = PostTasksRequestDTO(user_id = user_id, task = taskModel)
 
                 //posting data to api
-                taskViewModel.postTaskToApiThroughViewModel(postTasksRequestDTO)
+                calendarTaskViewModel.postTaskToApiThroughViewModel(postTasksRequestDTO)
 
             }
 
@@ -222,7 +222,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
     private fun getTasksOfSelectedDate(today: String) {
 
         //getting tasks list of selected from view model
-        taskViewModel.getAllTasksFromRoomDatabaseAccordingToDateThroughViewModel(today)
+        calendarTaskViewModel.getAllTasksFromRoomDatabaseAccordingToDateThroughViewModel(today)
             .observe(viewLifecycleOwner, Observer {
                 listOfCalenderTasks.clear()
                 listOfCalenderTasks.addAll(it)
@@ -251,7 +251,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
 
         val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = user_id, task_id = task_id)
         val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
-        taskViewModel.deleteTaskInApiThroughViewModel(deleteTaskRequestDTO, getTasksRequestDTO)
+        calendarTaskViewModel.deleteTaskInApiThroughViewModel(deleteTaskRequestDTO, getTasksRequestDTO)
 
     }
 

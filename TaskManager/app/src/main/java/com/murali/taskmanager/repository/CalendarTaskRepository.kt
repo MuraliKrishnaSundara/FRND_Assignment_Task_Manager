@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TaskRepository @Inject constructor(val calendarTaskDao: CalendarTaskDao) {
+class CalendarTaskRepository @Inject constructor(val calendarTaskDao: CalendarTaskDao) {
 
     private val apiCalendar: CalendarTasksAPI =
         CalendarTasksNetwork.retrofit.create(CalendarTasksAPI::class.java)
