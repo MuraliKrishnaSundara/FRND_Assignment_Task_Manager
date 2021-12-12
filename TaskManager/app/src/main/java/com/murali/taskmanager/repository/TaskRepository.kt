@@ -3,8 +3,7 @@ package com.murali.taskmanager.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.murali.taskmanager.data.api.Network
-import com.murali.taskmanager.data.api.ResponseHandler
-import com.murali.taskmanager.data.api.TasksAPI
+import com.murali.taskmanager.data.api.CalenderTasksAPI
 import com.murali.taskmanager.data.local.CalenderTaskDao
 import com.murali.taskmanager.data.local.CalenderTaskModel
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
@@ -16,12 +15,12 @@ import kotlinx.coroutines.launch
 
 class TaskRepository(val calenderTaskDao: CalenderTaskDao) {
 
-    private val api: TasksAPI = Network.getRetrofit().create(TasksAPI::class.java)
+    private val apiCalender: CalenderTasksAPI = Network.getRetrofit().create(CalenderTasksAPI::class.java)
 
     //adding task to api
     fun addTaskApiToDao(calenderTaskModel: PostTasksRequestDTO) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = api.addTaskToAPI(calenderTaskModel)
+            val response = apiCalender.addTaskToAPI(calenderTaskModel)
             if (response.status == "Success") {
                 Log.d("murali", "successfully task added")
             } else {
@@ -33,7 +32,7 @@ class TaskRepository(val calenderTaskDao: CalenderTaskDao) {
     //getting tasks from api and adding to room database
     fun getAllTasksFromApiAndAddToRoomDataBase(getTasksRequestDTO: GetTasksRequestDTO) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = api.getTasksFromAPI(getTasksRequestDTO)
+            val response = apiCalender.getTasksFromAPI(getTasksRequestDTO)
             if (!response.tasks.isEmpty()) {
                 storeInCalenderTaskRoomDataBase(response)
                 Log.d("murali", "Response getting success")

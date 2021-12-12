@@ -6,7 +6,7 @@ import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksResponseDTO
 import retrofit2.http.*
 
-interface TasksAPI {
+interface CalenderTasksAPI {
 
     //posting tasks to api
     @POST("api/storeCalendarTask")

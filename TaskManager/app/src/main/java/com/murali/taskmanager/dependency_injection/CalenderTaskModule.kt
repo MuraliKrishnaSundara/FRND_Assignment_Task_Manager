@@ -2,7 +2,7 @@ package com.murali.taskmanager.dependency_injection
 
 import android.content.Context
 import androidx.room.Room
-import com.murali.taskmanager.data.api.TasksAPI
+import com.murali.taskmanager.data.api.CalenderTasksAPI
 import com.murali.taskmanager.data.local.CalenderTaskDao
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
 import dagger.Module
@@ -20,12 +20,12 @@ object CalenderTaskModule {
 
     @Singleton
     @Provides
-    fun provideCalenderTaskAPIService(): TasksAPI {
+    fun provideCalenderTaskAPIService(): CalenderTasksAPI {
         val builder = Retrofit.Builder()
             .baseUrl("http://13.232.92.136:8084/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        return builder.create(TasksAPI::class.java)
+        return builder.create(CalenderTasksAPI::class.java)
     }
 
     @Singleton
