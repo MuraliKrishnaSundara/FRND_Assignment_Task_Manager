@@ -13,8 +13,9 @@ import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TaskRepository(val calendarTaskDao: CalendarTaskDao) {
+class TaskRepository @Inject constructor(val calendarTaskDao: CalendarTaskDao) {
 
     private val apiCalendar: CalendarTasksAPI =
         CalendarTasksNetwork.retrofit.create(CalendarTasksAPI::class.java)

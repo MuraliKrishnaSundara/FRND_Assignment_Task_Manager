@@ -7,8 +7,11 @@ import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.repository.TaskRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class TaskViewModel(val repository: TaskRepository) : ViewModel() {
+@HiltViewModel
+class TaskViewModel @Inject constructor(val repository: TaskRepository) : ViewModel() {
 
     //adding tasks to api
     fun postTaskToApiThroughViewModel(calenderTaskModel: PostTasksRequestDTO) {
