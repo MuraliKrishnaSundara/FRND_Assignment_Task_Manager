@@ -3,6 +3,7 @@ package com.murali.taskmanager.view.ui
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.EditText
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
+import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.data.response.post.TaskDTO
 import com.murali.taskmanager.databinding.FragmentHomeBinding
@@ -58,6 +61,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
         taskViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
         dateSelected = LocalDate.now()
+        Log.d("murali", dateSelected.toString())
         calenderTasksOfSelectedDate(dateSelected.toString())
         createMonthLayout()
 
@@ -155,18 +159,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
     }
 
     override fun onDateClicked(date: String, position: Int, today: String) {
-
-        calenderTasksOfSelectedDate(today)
+        val taskDate =
+            "" + date.toString() + " " + monthAndYearOfPresentDate(dateSelected!!)
+        calenderTasksOfSelectedDate(taskDate)
 
         if (date != "") {
-            val message =
-                "Selected Date " + date.toString() + " " + monthAndYearOfPresentDate(dateSelected!!)
+
             //show edit text dialog to add task
-            showEditTextDialogToAddTaskName(
-                "" + date.toString() + " " + monthAndYearOfPresentDate(
-                    dateSelected!!
-                )
-            )
+            showEditTextDialogToAddTaskName(taskDate)
         } else {
             Toast.makeText(context, "Date Error", Toast.LENGTH_LONG).show()
         }
@@ -207,12 +207,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
     }
 
     override fun deleteTaskInViewModel(task_id: Int) {
-        TODO("Not yet implemented")
+
+        /*
+        as after deleting task in api we need update data in recycler view,
+        so here after successfully deleting task from api
+        we are again making api call and storing in room db
+        which can be observed through live data and the recycler view will be updated.
+         */
+
+        val deleteTaskRequestDTO = DeleteTaskRequestDTO(user_id = user_id, task_id = task_id)
+        val getTasksRequestDTO = GetTasksRequestDTO(user_id = user_id)
+        taskViewModel.deleteTaskInRepository(deleteTaskRequestDTO, getTasksRequestDTO)
+
     }
-/*
-    override fun deleteTaskInViewModel(calenderTaskModel: CalenderTaskModel) {
-        //taskModel.status = 0
-        taskViewModel.deleteTaskInRepository(calenderTaskModel)
-    }
-*/
+
 }

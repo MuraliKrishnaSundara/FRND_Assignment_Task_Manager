@@ -29,7 +29,7 @@
                 android:background="#00000000"
                 android:fitsSystemWindows="true"
                 android:minHeight="50dp"
-                app:contentScrim="#2096F4"
+                app:contentScrim="@color/teal_700"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
@@ -231,42 +231,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-
-
-        <LinearLayout
-            android:id="@+id/addTaskLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="500dp"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
-
-            <EditText
-                android:id="@+id/updateEventNoOfTickets"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:hint="Enter Name of Task" />
-
-            <Button
-                android:id="@+id/btnUpdateEvent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="20dp"
-                android:background="@color/teal_700"
-                android:text="Add Task for selected date"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
-
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
