@@ -2,7 +2,7 @@ package com.murali.taskmanager.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.CalenderTaskModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO

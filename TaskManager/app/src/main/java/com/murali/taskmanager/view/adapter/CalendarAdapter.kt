@@ -10,7 +10,7 @@ import androidx.collection.arraySetOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.CalenderTaskModel
 import com.murali.taskmanager.view.inter_face.onDateClickListener
 import com.murali.taskmanager.view_model.TaskViewModel
 import kotlinx.android.synthetic.main.calendar_date_view.view.*

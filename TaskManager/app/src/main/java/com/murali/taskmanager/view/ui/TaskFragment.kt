@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
-import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.CalenderTaskModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.databinding.FragmentTaskBinding

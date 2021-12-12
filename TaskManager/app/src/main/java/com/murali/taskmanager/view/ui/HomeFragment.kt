@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
-import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.CalenderTaskModel
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.data.response.post.TaskDTO
 import com.murali.taskmanager.databinding.FragmentHomeBinding

@@ -1,4 +1,4 @@
-package com.murali.taskmanager.data.local
+package com.murali.taskmanager.data.response.get
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

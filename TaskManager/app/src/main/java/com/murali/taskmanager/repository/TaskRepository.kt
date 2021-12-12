@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import com.murali.taskmanager.api.Network
 import com.murali.taskmanager.api.CalenderTasksAPI
 import com.murali.taskmanager.data.local.CalenderTaskDao
-import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.CalenderTaskModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksResponseDTO
