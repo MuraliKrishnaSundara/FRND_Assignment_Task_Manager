@@ -16,19 +16,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
 import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
+import com.murali.taskmanager.data.response.post.TaskDTO
 import com.murali.taskmanager.databinding.FragmentHomeBinding
 import com.murali.taskmanager.repository.TaskRepository
 import com.murali.taskmanager.view.adapter.CalendarAdapter
-import com.murali.taskmanager.view.adapter.DateClickListener
 import com.murali.taskmanager.view.adapter.TaskAdapter
+import com.murali.taskmanager.view.inter_face.DateClickListener
 import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 import com.murali.taskmanager.view_model.TaskViewModel
 import com.murali.taskmanager.view_model.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTaskDeleteClicked {
 
@@ -104,7 +108,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
 
         //setting month year
         fragmentHomeBinding.apply {
-            monthYearTV.text = presentDateMonthYear(dateSelected!!)
+            monthYearTV.text = monthAndYearOfPresentDate(dateSelected!!)
             calendarRecyclerView.layoutManager = layoutManager
             calendarRecyclerView.adapter = calendarAdapter
         }
@@ -128,7 +132,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
     }
 
     //get month year of current date
-    private fun presentDateMonthYear(date: LocalDate): String? {
+    private fun monthAndYearOfPresentDate(date: LocalDate): String? {
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM yyyy")
         return date.format(formatter)
     }
@@ -155,10 +159,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
 
         if (date != "") {
             val message =
-                "Selected Date " + date.toString() + " " + presentDateMonthYear(dateSelected!!)
+                "Selected Date " + date.toString() + " " + monthAndYearOfPresentDate(dateSelected!!)
             //show edit text dialog to add task
             showEditTextDialogToAddTaskName(
-                "" + date.toString() + " " + presentDateMonthYear(
+                "" + date.toString() + " " + monthAndYearOfPresentDate(
                     dateSelected!!
                 )
             )
@@ -184,13 +188,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), DateClickListener, onTask
             setPositiveButton("Add") { dialog, which ->
 
                 //storing in database
-                val taskModel = CalenderTaskModel(
+                val taskModel = TaskDTO(
                     etTaskName.text.toString(),
                     etTaskDescription.text.toString(),
                     date
                 )
 
-                taskViewModel.addTaskToRepository(taskModel)
+                val postTasksRequestDTO = PostTasksRequestDTO(user_id = 1005, task = taskModel)
+                taskViewModel.addTaskApiToThroughRepository(postTasksRequestDTO)
 
             }
             setNegativeButton("Cancel") { dialog, which ->

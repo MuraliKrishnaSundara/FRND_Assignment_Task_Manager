@@ -3,18 +3,23 @@ package com.murali.taskmanager.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
+import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
 import com.murali.taskmanager.repository.TaskRepository
 
-class TaskViewModel(val repository: TaskRepository) : ViewModel() {
+class TaskViewModel (val repository: TaskRepository) : ViewModel() {
 
-    fun addTaskToRepository(calenderTaskModel: CalenderTaskModel) {
-        repository.addTaskToDao(calenderTaskModel)
+    //adding tasks to api
+    fun addTaskApiToThroughRepository(calenderTaskModel: PostTasksRequestDTO) {
+        repository.addTaskApiToDao(calenderTaskModel)
     }
 
-    fun getAllApiTasksFromRepository() {
-        repository.getRemoteTasks()
+    //getting all tasks from api but adding to room db
+    fun getAllApiTasksFromRepository(getTasksRequestDTO: GetTasksRequestDTO) {
+        repository.getAllTasksFromApiAndAddToRoomDataBase(getTasksRequestDTO)
     }
 
+    //getting all tasks from room db using livedata
     fun getAllTasksFromRepository(): LiveData<List<CalenderTaskModel>> {
         return repository.getAllTasksFromDao()
     }

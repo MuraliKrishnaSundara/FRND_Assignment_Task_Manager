@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskRoomDataBase
 import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.databinding.FragmentTaskBinding
 import com.murali.taskmanager.repository.TaskRepository
 import com.murali.taskmanager.view.adapter.TaskAdapter
@@ -51,8 +52,11 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
             list.addAll(it)
             adapter.notifyDataSetChanged()
         })
-        itemTaskViewModel.getAllApiTasksFromRepository()
+
         setRecyclerView()
+
+        val getTasksRequestDTO = GetTasksRequestDTO(user_id = 1005)
+        itemTaskViewModel.getAllApiTasksFromRepository(getTasksRequestDTO)
 
     }
 

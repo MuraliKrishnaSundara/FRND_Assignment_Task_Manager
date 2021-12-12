@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalenderTaskModel
+import com.murali.taskmanager.view.inter_face.DateClickListener
 import com.murali.taskmanager.view_model.TaskViewModel
 import kotlinx.android.synthetic.main.calendar_date_view.view.*
 import java.time.LocalDate
@@ -47,6 +48,7 @@ class CalendarAdapter(
         return dateList.size
     }
 
+    //calender view holder
     inner class CalendarViewHolder(
         private val view: View,
         private val clickListener: DateClickListener,
@@ -90,7 +92,6 @@ class CalendarAdapter(
                                 view.rlDate.setBackgroundResource(R.drawable.current_day_bg)
                                 view.cellDayText.setTextColor(Color.parseColor("#FFFFFFFF"))
                             }
-//                        rlDate.setBackgroundResource(R.drawable.selected_date_bg)
                         } else {
                             check()
                             if (date == curDate!![2]) {
@@ -119,12 +120,9 @@ class CalendarAdapter(
                     bool[i] = false
                 }
             }
-
         }
 
     }
-}
 
-interface DateClickListener {
-    fun onDateClicked(date: String, position: Int, today: String)
+
 }
