@@ -2,7 +2,8 @@ package com.murali.taskmanager.data.response.post
 
 import com.google.gson.annotations.SerializedName
 
-data class TaskDTO(
+//data class for posting data to api
+data class PostTaskModelDTO(
 
     @SerializedName("name")
     val name: String,

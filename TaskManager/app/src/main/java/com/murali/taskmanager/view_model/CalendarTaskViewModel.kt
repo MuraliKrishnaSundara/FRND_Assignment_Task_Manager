@@ -2,7 +2,7 @@ package com.murali.taskmanager.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.murali.taskmanager.data.response.get.CalendarTaskModel
+import com.murali.taskmanager.data.response.get.ApiAndRoomDBCalendarTasksModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
@@ -24,12 +24,12 @@ class CalendarTaskViewModel @Inject constructor(val repositoryCalendar: Calendar
     }
 
     //getting all tasks from room db using livedata
-    fun getAllTasksFromRoomDatabaseThroughViewModel(): LiveData<List<CalendarTaskModel>> {
+    fun getAllTasksFromRoomDatabaseThroughViewModel(): LiveData<List<ApiAndRoomDBCalendarTasksModel>> {
         return repositoryCalendar.getAllTasksFromRoomDatabaseThroughRepository()
     }
 
     //getting all tasks from room db according to date selected using livedata
-    fun getAllTasksFromRoomDatabaseAccordingToDateThroughViewModel(date: String): LiveData<List<CalendarTaskModel>> {
+    fun getAllTasksFromRoomDatabaseAccordingToDateThroughViewModel(date: String): LiveData<List<ApiAndRoomDBCalendarTasksModel>> {
         return repositoryCalendar.getAllTasksFromRoomDatabaseAccordingToDateThroughRepository(date)
     }
 

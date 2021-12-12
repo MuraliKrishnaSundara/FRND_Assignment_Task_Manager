@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import com.murali.taskmanager.api.CalendarTasksNetwork
 import com.murali.taskmanager.api.CalendarTasksAPI
 import com.murali.taskmanager.data.local.CalendarTaskDao
-import com.murali.taskmanager.data.response.get.CalendarTaskModel
+import com.murali.taskmanager.data.response.get.ApiAndRoomDBCalendarTasksModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksResponseDTO
@@ -48,13 +48,13 @@ class CalendarTaskRepository @Inject constructor(val calendarTaskDao: CalendarTa
 
     //adding tasks to room database which are coming from api
     private fun storeTaskInRoomDataBaseThroughRepository(response: GetTasksResponseDTO) {
-        val listOfTasks = ArrayList<CalendarTaskModel>()
+        val listOfTasks = ArrayList<ApiAndRoomDBCalendarTasksModel>()
         response.tasks.forEach {
-            val newTask = CalendarTaskModel(
+            val newTask = ApiAndRoomDBCalendarTasksModel(
                 it.task_id,
-                it.task_detail.name,
-                it.task_detail.description,
-                it.task_detail.date
+                it.tasks_detailApiAndRoomDB.name,
+                it.tasks_detailApiAndRoomDB.description,
+                it.tasks_detailApiAndRoomDB.date
             )
             listOfTasks.add(newTask)
         }
@@ -65,12 +65,12 @@ class CalendarTaskRepository @Inject constructor(val calendarTaskDao: CalendarTa
     }
 
     //getting all tasks from room database using livedata
-    fun getAllTasksFromRoomDatabaseThroughRepository(): LiveData<List<CalendarTaskModel>> {
+    fun getAllTasksFromRoomDatabaseThroughRepository(): LiveData<List<ApiAndRoomDBCalendarTasksModel>> {
         return calendarTaskDao.getAllTasksFromRoomDataBase()
     }
 
     //getting all tasks from room database according to date selected using livedata
-    fun getAllTasksFromRoomDatabaseAccordingToDateThroughRepository(date: String): LiveData<List<CalendarTaskModel>> {
+    fun getAllTasksFromRoomDatabaseAccordingToDateThroughRepository(date: String): LiveData<List<ApiAndRoomDBCalendarTasksModel>> {
         return calendarTaskDao.getAllTasksFromRoomDataBaseAccordingToDate(date)
     }
 

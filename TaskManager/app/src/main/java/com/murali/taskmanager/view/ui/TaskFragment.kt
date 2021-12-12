@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalendarTaskRoomDataBase
-import com.murali.taskmanager.data.response.get.CalendarTaskModel
+import com.murali.taskmanager.data.response.get.ApiAndRoomDBCalendarTasksModel
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.databinding.FragmentTaskBinding
@@ -26,7 +26,7 @@ class TaskFragment : Fragment(), onTaskDeleteClicked {
     private lateinit var itemCalendarTaskViewModel: CalendarTaskViewModel
     private val user_id: Int = 1005
     private lateinit var adapter: TaskAdapter
-    private var list = arrayListOf<CalendarTaskModel>()
+    private var list = arrayListOf<ApiAndRoomDBCalendarTasksModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.murali.taskmanager.data.response.get.CalendarTaskModel
+import com.murali.taskmanager.data.response.get.ApiAndRoomDBCalendarTasksModel
 
-@Database(entities = [CalendarTaskModel::class], version = 5)
+@Database(entities = [ApiAndRoomDBCalendarTasksModel::class], version = 5)
 
 abstract class CalendarTaskRoomDataBase : RoomDatabase() {
 

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "calender_tasks_table")
 
 //data class for both get api and room database
-class CalendarTaskModel(
+class ApiAndRoomDBCalendarTasksModel(
 
     @ColumnInfo(name = "task_id")
     val task_id: Int,

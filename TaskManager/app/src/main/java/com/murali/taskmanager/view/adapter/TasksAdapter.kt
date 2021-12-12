@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
-import com.murali.taskmanager.data.response.get.CalendarTaskModel
+import com.murali.taskmanager.data.response.get.ApiAndRoomDBCalendarTasksModel
 import com.murali.taskmanager.databinding.TaskItemViewBinding
 import com.murali.taskmanager.view.inter_face.onTaskDeleteClicked
 
 class TaskAdapter(
-    var calendarTaskList: ArrayList<CalendarTaskModel>,
+    var apiAndRoomDBCalendarTasksList: ArrayList<ApiAndRoomDBCalendarTasksModel>,
     private val onTaskDeleteClicked: onTaskDeleteClicked
 ) :
     RecyclerView.Adapter<TaskViewHolder>() {
@@ -26,12 +26,12 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(taskViewHolder: TaskViewHolder, position: Int) {
-        val calendarTask = calendarTaskList[position]
+        val calendarTask = apiAndRoomDBCalendarTasksList[position]
         taskViewHolder.setTask(calendarTask)
     }
 
     override fun getItemCount(): Int {
-        return calendarTaskList.size
+        return apiAndRoomDBCalendarTasksList.size
     }
 
 }
@@ -41,14 +41,14 @@ class TaskViewHolder(
     private val taskItemViewBinding: TaskItemViewBinding,
     private val onTaskDeleteClicked: onTaskDeleteClicked
 ) : RecyclerView.ViewHolder(taskItemViewBinding.root) {
-    fun setTask(calendarTaskModel: CalendarTaskModel) {
+    fun setTask(apiAndRoomDBCalendarTasksModel: ApiAndRoomDBCalendarTasksModel) {
 
         //passing data to view through calendarTaskModel data binding
-        taskItemViewBinding.calendarTaskModel = calendarTaskModel
+        taskItemViewBinding.calendarTaskModel = apiAndRoomDBCalendarTasksModel
 
         //on click of delete task, it will get task_id of that task and pass to view model to delete it
         taskItemViewBinding.ivDeleteTask.setOnClickListener {
-            onTaskDeleteClicked.deleteTaskThroughViewModelInApi(calendarTaskModel.task_id)
+            onTaskDeleteClicked.deleteTaskThroughViewModelInApi(apiAndRoomDBCalendarTasksModel.task_id)
         }
 
     }

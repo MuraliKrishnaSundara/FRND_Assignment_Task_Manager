@@ -7,6 +7,6 @@ data class PostTasksRequestDTO(
     @SerializedName("user_id")
     val user_id: Int,
     @SerializedName("task")
-    val task: TaskDTO
+    val postTaskModel: PostTaskModelDTO
 
 )

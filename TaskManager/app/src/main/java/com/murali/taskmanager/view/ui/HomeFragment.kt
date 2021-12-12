@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.murali.taskmanager.R
 import com.murali.taskmanager.data.local.CalendarTaskRoomDataBase
 import com.murali.taskmanager.data.response.delete.DeleteTaskRequestDTO
-import com.murali.taskmanager.data.response.get.CalendarTaskModel
+import com.murali.taskmanager.data.response.get.ApiAndRoomDBCalendarTasksModel
 import com.murali.taskmanager.data.response.get.GetTasksRequestDTO
 import com.murali.taskmanager.data.response.post.PostTasksRequestDTO
-import com.murali.taskmanager.data.response.post.TaskDTO
+import com.murali.taskmanager.data.response.post.PostTaskModelDTO
 import com.murali.taskmanager.databinding.FragmentHomeBinding
 import com.murali.taskmanager.repository.CalendarTaskRepository
 import com.murali.taskmanager.view.adapter.MonthAdapter
@@ -38,7 +38,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTaskDeleteClicked {
 
-    private var listOfCalenderTasks = arrayListOf<CalendarTaskModel>()
+    private var listOfCalenderTasks = arrayListOf<ApiAndRoomDBCalendarTasksModel>()
     private lateinit var taskAdapter: TaskAdapter
     private val user_id: Int = 1005
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
@@ -197,13 +197,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), onDateClickListener, onTa
             setPositiveButton("Add") { dialog, which ->
 
                 //setting data to model
-                val taskModel = TaskDTO(
+                val taskModel = PostTaskModelDTO(
                     etTaskName.text.toString(),
                     etTaskDescription.text.toString(),
                     date
                 )
 
-                val postTasksRequestDTO = PostTasksRequestDTO(user_id = user_id, task = taskModel)
+                val postTasksRequestDTO = PostTasksRequestDTO(user_id = user_id, postTaskModel = taskModel)
 
                 //posting data to api
                 calendarTaskViewModel.postTaskToApiThroughViewModel(postTasksRequestDTO)
